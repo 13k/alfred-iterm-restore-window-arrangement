@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.commita.alfred.restore-iterm-window-arrangement</string>
+	<key>name</key>
+	<string>Restore iTerm Window Arrangement</string>
+	<key>description</key>
+	<string>Restores an iTerm window arrangement</string>
+	<key>category</key>
+	<string>Productivity</string>
+	<key>createdby</key>
+	<string>Kiyoshi '13k' Murata</string>
+	<key>webaddress</key>
+	<string>http://opensource.commita.com</string>
+	<key>readme</key>
+	<string></string>
+	<key>connections</key>
+	<dict>
+		<key>6C7B1799-2748-49C1-B5C8-205988FA823C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>E8F69760-AF03-426A-A078-A7CABE4E6FA1</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>iwin</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>script</key>
+				<string>on run
+	set query to "{query}"
+
+	tell application "System Events"
+		tell process "iTerm"
+			tell menu bar 1
+				tell menu bar item "Window"
+					tell menu "Window"
+						tell menu item "Restore Window Arrangement"
+							tell menu "Restore Window Arrangement"
+								set arrangements to {}
+								set allArrangements to get name of every menu item
+
+								if (length of query) &gt; 0 then
+									repeat with arrangement in allArrangements
+										if arrangement contains query
+											set arrangements to (arrangements &amp; arrangement)
+										end if
+									end repeat
+								else
+									set arrangements to allArrangements
+								end if
+
+								set xml to "&lt;?xml version=\"1.0\"?&gt;&lt;items&gt;"
+
+								repeat with arrangement in arrangements
+									set xml to (xml &amp; "&lt;item uid=\"" &amp; arrangement &amp; "\" arg=\"" &amp; arrangement &amp; "\"&gt;&lt;title&gt;" &amp; arrangement &amp; "&lt;/title&gt;&lt;/item&gt;")
+								end repeat
+
+								set xml to (xml &amp; "&lt;/items&gt;")
+
+								copy xml to stdout
+							end tell
+						end tell
+					end tell
+				end tell
+			end tell
+		end tell
+	end tell
+end</string>
+				<key>title</key>
+				<string>Restore an iTerm Window Arrangement</string>
+				<key>type</key>
+				<integer>6</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>6C7B1799-2748-49C1-B5C8-205988FA823C</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>applescript</key>
+				<string>on alfred_script(q)
+
+tell application "iTerm" to activate
+
+tell application "System Events"
+	tell process "iTerm"
+		tell menu bar 1
+			tell menu bar item "Window"
+				tell menu "Window"
+					tell menu item "Restore Window Arrangement"
+						tell menu "Restore Window Arrangement"
+							click menu item q
+						end tell
+					end tell
+				end tell
+			end tell
+		end tell
+
+		activate
+	end tell
+end tell
+
+end alfred_script</string>
+				<key>cachescript</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.applescript</string>
+			<key>uid</key>
+			<string>E8F69760-AF03-426A-A078-A7CABE4E6FA1</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>disabled</key>
+	<false/>
+	<key>uidata</key>
+	<dict>
+		<key>6C7B1799-2748-49C1-B5C8-205988FA823C</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>E8F69760-AF03-426A-A078-A7CABE4E6FA1</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+	</dict>
+</dict>
+</plist>
