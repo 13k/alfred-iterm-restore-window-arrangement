@@ -3,7 +3,7 @@ on alfred_script(q)
 	tell application "iTerm" to activate
 
 	tell application "System Events"
-		tell process "iTerm"
+		tell process "iTerm2"
 			tell menu bar 1
 				tell menu bar item "Window"
 					tell menu "Window"
